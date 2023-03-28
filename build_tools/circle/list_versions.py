@@ -44,7 +44,7 @@ def get_file_extension(version):
 
 
 def get_file_size(version):
-    api_url = ROOT_URL + "%s/_downloads" % version
+    api_url = f"{ROOT_URL}{version}/_downloads"
     for path_details in json_urlread(api_url):
         file_extension = get_file_extension(version)
         file_path = f"scikit-learn-docs.{file_extension}"
@@ -78,7 +78,7 @@ for path_details in root_listing:
         continue
     if path_details["type"] == "dir":
         html = urlopen(RAW_FMT % name).read().decode("utf8")
-        version_num = VERSION_RE.search(html).group(1)
+        version_num = VERSION_RE.search(html)[1]
         file_size = get_file_size(name)
         dirs[name] = (version_num, file_size)
 
@@ -102,13 +102,9 @@ for name in NAMED_DIRS + sorted(
         continue
     else:
         seen.add(version_num)
-    name_display = "" if name[:1].isdigit() else " (%s)" % name
-    path = "https://scikit-learn.org/%s/" % name
-    out = "* `Scikit-learn %s%s documentation <%s>`_" % (
-        version_num,
-        name_display,
-        path,
-    )
+    name_display = "" if name[:1].isdigit() else f" ({name})"
+    path = f"https://scikit-learn.org/{name}/"
+    out = f"* `Scikit-learn {version_num}{name_display} documentation <{path}>`_"
     if file_size is not None:
         file_extension = get_file_extension(version_num)
         out += (

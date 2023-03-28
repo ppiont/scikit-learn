@@ -27,9 +27,7 @@ def bench_sample(sampling, n_population, n_samples):
     t_start = datetime.now()
     sampling(n_population, n_samples)
     delta = datetime.now() - t_start
-    # stop time
-    time = compute_time(t_start, delta)
-    return time
+    return compute_time(t_start, delta)
 
 
 if __name__ == "__main__":
@@ -91,8 +89,7 @@ if __name__ == "__main__":
     for key in selected_algorithm:
         if key not in default_algorithms.split(","):
             raise ValueError(
-                'Unknown sampling algorithm "%s" not in (%s).'
-                % (key, default_algorithms)
+                f'Unknown sampling algorithm "{key}" not in ({default_algorithms}).'
             )
 
     ###########################################################################
@@ -101,13 +98,11 @@ if __name__ == "__main__":
     # We assume that sampling algorithm has the following signature:
     #   sample(n_population, n_sample)
     #
-    sampling_algorithm = {}
-
-    ###########################################################################
-    # Set Python core input
-    sampling_algorithm[
-        "python-core-sample"
-    ] = lambda n_population, n_sample: random.sample(range(n_population), n_sample)
+    sampling_algorithm = {
+        "python-core-sample": lambda n_population, n_sample: random.sample(
+            range(n_population), n_sample
+        )
+    }
 
     ###########################################################################
     # Set custom automatic method selection
@@ -169,7 +164,7 @@ if __name__ == "__main__":
     print("===========================")
 
     for name in sorted(sampling_algorithm):
-        print("Perform benchmarks for %s..." % name, end="")
+        print(f"Perform benchmarks for {name}...", end="")
         time[name] = np.zeros(shape=(opts.n_steps, opts.n_times))
 
         for step in range(opts.n_steps):
@@ -204,11 +199,11 @@ if __name__ == "__main__":
 
     print("Sampling algorithm performance:")
     print("===============================")
-    print("Results are averaged over %s repetition(s)." % opts.n_times)
+    print(f"Results are averaged over {opts.n_times} repetition(s).")
     print("")
 
     fig = plt.figure("scikit-learn sample w/o replacement benchmark results")
-    fig.suptitle("n_population = %s, n_times = %s" % (opts.n_population, opts.n_times))
+    fig.suptitle(f"n_population = {opts.n_population}, n_times = {opts.n_times}")
     ax = fig.add_subplot(111)
     for name in sampling_algorithm:
         ax.plot(ratio, time[name], label=name)

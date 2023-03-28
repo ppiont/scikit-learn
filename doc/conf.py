@@ -238,8 +238,6 @@ htmlhelp_basename = "scikit-learndoc"
 # If true, the reST sources are included in the HTML build as _sources/name.
 html_copy_source = True
 
-# Adds variables into templates
-html_context = {}
 # finds latest release highlights and places it into HTML context for
 # index.html
 release_highlights_dir = Path("..") / "examples" / "release_highlights"
@@ -248,10 +246,9 @@ latest_highlights = sorted(release_highlights_dir.glob("plot_release_highlights_
     -1
 ]
 latest_highlights = latest_highlights.with_suffix("").name
-html_context[
-    "release_highlights"
-] = f"auto_examples/release_highlights/{latest_highlights}"
-
+html_context = {
+    "release_highlights": f"auto_examples/release_highlights/{latest_highlights}"
+}
 # get version from highlight name assuming highlights have the form
 # plot_release_highlights_0_22_0
 highlight_version = ".".join(latest_highlights.split("_")[-3:-1])
@@ -347,7 +344,7 @@ if v.is_devrelease:
     binder_branch = "main"
 else:
     major, minor = v.release[:2]
-    binder_branch = "{}.{}.X".format(major, minor)
+    binder_branch = f"{major}.{minor}.X"
 
 
 class SubSectionTitleOrder:
@@ -362,7 +359,7 @@ class SubSectionTitleOrder:
         self.regex = re.compile(r"^([\w ]+)\n-", re.MULTILINE)
 
     def __repr__(self):
-        return "<%s>" % (self.__class__.__name__,)
+        return f"<{self.__class__.__name__}>"
 
     def __call__(self, directory):
         src_path = os.path.normpath(os.path.join(self.src_dir, directory))
@@ -380,9 +377,7 @@ class SubSectionTitleOrder:
             return directory
 
         title_match = self.regex.search(content)
-        if title_match is not None:
-            return title_match.group(1)
-        return directory
+        return title_match.group(1) if title_match is not None else directory
 
 
 class SKExampleTitleSortKey(ExampleTitleSortKey):
@@ -450,7 +445,7 @@ def make_carousel_thumbs(app, exception):
     for glr_plot, max_width in carousel_thumbs.items():
         image = os.path.join(image_dir, glr_plot)
         if os.path.exists(image):
-            c_thumb = os.path.join(image_dir, glr_plot[:-4] + "_carousel.png")
+            c_thumb = os.path.join(image_dir, f"{glr_plot[:-4]}_carousel.png")
             sphinx_gallery.gen_rst.scale_image(image, c_thumb, max_width, 190)
 
 

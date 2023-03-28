@@ -21,8 +21,7 @@ def get_from_config():
 
     profile = os.getenv("SKLBENCH_PROFILE", config["profile"])
 
-    n_jobs_vals_env = os.getenv("SKLBENCH_NJOBS")
-    if n_jobs_vals_env:
+    if n_jobs_vals_env := os.getenv("SKLBENCH_NJOBS"):
         n_jobs_vals = eval(n_jobs_vals_env)
     else:
         n_jobs_vals = config["n_jobs_vals"]

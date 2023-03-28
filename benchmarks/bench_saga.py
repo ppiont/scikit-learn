@@ -40,8 +40,7 @@ def fit_single(
         return
 
     print(
-        "Solving %s logistic regression with penalty %s, solver %s."
-        % ("binary" if single_target else "multinomial", penalty, solver)
+        f'Solving {"binary" if single_target else "multinomial"} logistic regression with penalty {penalty}, solver {solver}.'
     )
 
     if solver == "lightning":
@@ -74,13 +73,7 @@ def fit_single(
 
     for this_max_iter in range(1, max_iter + 1, 2):
         print(
-            "[%s, %s, %s] Max iter: %s"
-            % (
-                "binary" if single_target else "multinomial",
-                penalty,
-                solver,
-                this_max_iter,
-            )
+            f'[{"binary" if single_target else "multinomial"}, {penalty}, {solver}] Max iter: {this_max_iter}'
         )
         if solver == "lightning":
             lr = SAGAClassifier(
@@ -213,7 +206,7 @@ def exp(
 
     res = []
     idx = 0
-    for dtype_name in dtypes_mapping.keys():
+    for dtype_name in dtypes_mapping:
         for solver in solvers:
             if not (skip_slow and solver == "lightning" and penalty == "l1"):
                 lr, times, train_scores, test_scores, accuracies = out[idx]
@@ -259,7 +252,7 @@ def plot(outname=None):
             ax.plot(
                 times,
                 scores,
-                label="%s - %s" % (solver, dtype),
+                label=f"{solver} - {dtype}",
                 color=colors[solver],
                 alpha=alpha[dtype],
                 marker=".",
@@ -307,7 +300,7 @@ def plot(outname=None):
             ax.plot(
                 times,
                 accuracy,
-                label="%s - %s" % (solver, dtype),
+                label=f"{solver} - {dtype}",
                 alpha=alpha[dtype],
                 marker=".",
                 color=colors[solver],
@@ -324,10 +317,10 @@ def plot(outname=None):
         ax.set_ylabel("Test accuracy")
         ax.legend()
         name = "single_target" if single_target else "multi_target"
-        name += "_%s" % penalty
+        name += f"_{penalty}"
         plt.suptitle(name)
         if outname is None:
-            outname = name + ".png"
+            outname = f"{name}.png"
         fig.tight_layout()
         fig.subplots_adjust(top=0.9)
 
@@ -338,7 +331,7 @@ def plot(outname=None):
             ax.plot(
                 np.arange(len(scores)),
                 scores,
-                label="%s - %s" % (solver, dtype),
+                label=f"{solver} - {dtype}",
                 marker=".",
                 alpha=alpha[dtype],
                 color=colors[solver],
@@ -372,7 +365,7 @@ if __name__ == "__main__":
             if n_sample is not None:
                 outname = "figures/saga_%s_%d.png" % (penalty, n_sample)
             else:
-                outname = "figures/saga_%s_all.png" % (penalty,)
+                outname = f"figures/saga_{penalty}_all.png"
             try:
                 os.makedirs("figures")
             except OSError:

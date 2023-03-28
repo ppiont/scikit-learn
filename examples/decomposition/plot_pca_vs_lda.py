@@ -18,6 +18,7 @@ LDA, in contrast to PCA, is a supervised method, using known class labels.
 
 """
 
+
 import matplotlib.pyplot as plt
 
 from sklearn import datasets
@@ -38,8 +39,7 @@ X_r2 = lda.fit(X, y).transform(X)
 
 # Percentage of variance explained for each components
 print(
-    "explained variance ratio (first two components): %s"
-    % str(pca.explained_variance_ratio_)
+    f"explained variance ratio (first two components): {str(pca.explained_variance_ratio_)}"
 )
 
 plt.figure()

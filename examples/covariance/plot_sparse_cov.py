@@ -50,6 +50,7 @@ iteratively refined in the neighborhood of the maximum.
 
 """
 
+
 # author: Gael Varoquaux <gael.varoquaux@inria.fr>
 # License: BSD 3 clause
 # Copyright: INRIA
@@ -116,7 +117,7 @@ for i, (name, this_cov) in enumerate(covs):
     )
     plt.xticks(())
     plt.yticks(())
-    plt.title("%s covariance" % name)
+    plt.title(f"{name} covariance")
 
 
 # plot the precisions
@@ -138,7 +139,7 @@ for i, (name, this_prec) in enumerate(precs):
     )
     plt.xticks(())
     plt.yticks(())
-    plt.title("%s precision" % name)
+    plt.title(f"{name} precision")
     if hasattr(ax, "set_facecolor"):
         ax.set_facecolor(".7")
     else:

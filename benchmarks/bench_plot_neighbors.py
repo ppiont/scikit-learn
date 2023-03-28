@@ -20,7 +20,7 @@ def get_data(N, D, dataset="dense"):
         X = X[:, i]
         return X[:N, :D]
     else:
-        raise ValueError("invalid dataset: %s" % dataset)
+        raise ValueError(f"invalid dataset: {dataset}")
 
 
 def barplot_neighbors(
@@ -102,6 +102,8 @@ def barplot_neighbors(
 
     plt.figure(figsize=(8, 11))
 
+    width = 0.8
+
     for sbplt, vals, quantity, build_time, query_time in [
         (311, Nrange, "N", N_results_build, N_results_query),
         (312, Drange, "D", D_results_build, D_results_query),
@@ -119,8 +121,6 @@ def barplot_neighbors(
 
         for i, alg in enumerate(algorithms):
             xvals = 0.1 + i * (1 + len(vals)) + np.arange(len(vals))
-            width = 0.8
-
             c_bar = plt.bar(xvals, build_time[alg] - bottom, width, bottom, color="r")
             q_bar = plt.bar(xvals, query_time[alg], width, build_time[alg], color="b")
 
@@ -146,16 +146,13 @@ def barplot_neighbors(
             label.set_rotation(-90)
             label.set_fontsize(10)
 
-        title_string = "Varying %s" % quantity
+        title_string = f"Varying {quantity}"
 
-        descr_string = ""
-
-        for s in "NDk":
-            if s == quantity:
-                pass
-            else:
-                descr_string += "%s = %i, " % (s, fiducial_values[s])
-
+        descr_string = "".join(
+            "%s = %i, " % (s, fiducial_values[s])
+            for s in "NDk"
+            if s != quantity
+        )
         descr_string = descr_string[:-2]
 
         plt.text(
@@ -179,7 +176,7 @@ def barplot_neighbors(
             va="center",
         )
 
-        plt.gcf().suptitle("%s data set" % dataset.capitalize(), fontsize=16)
+        plt.gcf().suptitle(f"{dataset.capitalize()} data set", fontsize=16)
 
     plt.figlegend((c_bar, q_bar), ("construction", "N-point query"), "upper right")
 

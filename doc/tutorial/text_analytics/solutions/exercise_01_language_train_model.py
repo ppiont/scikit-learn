@@ -6,6 +6,7 @@ recognize natural languages by using the frequencies of short character
 sequences as 'fingerprints'.
 
 """
+
 # Author: Olivier Grisel <olivier.grisel@ensta.org>
 # License: Simplified BSD
 
@@ -67,4 +68,4 @@ sentences = [
 predicted = clf.predict(sentences)
 
 for s, p in zip(sentences, predicted):
-    print('The language of "%s" is "%s"' % (s, dataset.target_names[p]))
+    print(f'The language of "{s}" is "{dataset.target_names[p]}"')

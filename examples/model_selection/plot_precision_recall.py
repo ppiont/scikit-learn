@@ -91,6 +91,7 @@ matrix as a binary prediction (micro-averaging).
              :func:`sklearn.metrics.f1_score`
 """
 
+
 # %%
 # In binary classification settings
 # ---------------------------------
@@ -198,9 +199,9 @@ from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
 
 # For each class
-precision = dict()
-recall = dict()
-average_precision = dict()
+precision = {}
+recall = {}
+average_precision = {}
 for i in range(n_classes):
     precision[i], recall[i], _ = precision_recall_curve(Y_test[:, i], y_score[:, i])
     average_precision[i] = average_precision_score(Y_test[:, i], y_score[:, i])

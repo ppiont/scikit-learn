@@ -77,7 +77,7 @@ for subplot, (D, title) in enumerate(
     zip((D_fixed, D_multi), ("fixed width", "multiple widths"))
 ):
     plt.subplot(1, 2, subplot + 1)
-    plt.title("Sparse coding against %s dictionary" % title)
+    plt.title(f"Sparse coding against {title} dictionary")
     plt.plot(y, lw=lw, linestyle="--", label="Original signal")
     # Do a wavelet approximation
     for title, algo, alpha, n_nonzero, color in estimators:

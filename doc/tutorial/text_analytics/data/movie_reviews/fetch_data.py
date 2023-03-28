@@ -1,5 +1,6 @@
 """Script to download the movie review dataset"""
 
+
 from pathlib import Path
 from hashlib import sha256
 import tarfile
@@ -16,7 +17,7 @@ DATA_FOLDER = Path("txt_sentoken")
 if not DATA_FOLDER.exists():
 
     if not ARCHIVE_NAME.exists():
-        print("Downloading dataset from %s (3 MB)" % URL)
+        print(f"Downloading dataset from {URL} (3 MB)")
         opener = urlopen(URL)
         with open(ARCHIVE_NAME, "wb") as archive:
             archive.write(opener.read())
@@ -25,7 +26,7 @@ if not DATA_FOLDER.exists():
         print("Checking the integrity of the archive")
         assert sha256(ARCHIVE_NAME.read_bytes()).hexdigest() == ARCHIVE_SHA256
 
-        print("Decompressing %s" % ARCHIVE_NAME)
+        print(f"Decompressing {ARCHIVE_NAME}")
         with tarfile.open(ARCHIVE_NAME, "r:gz") as archive:
             archive.extractall(path=".")
 

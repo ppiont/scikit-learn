@@ -137,12 +137,12 @@ def unpickle(file_name):
 
 def handle_missing_dataset(file_folder):
     if not os.path.isdir(file_folder):
-        print("%s file folder not found. Test skipped." % file_folder)
+        print(f"{file_folder} file folder not found. Test skipped.")
         return 0
 
 
 def get_data(dataset_name):
-    print("Getting dataset: %s" % dataset_name)
+    print(f"Getting dataset: {dataset_name}")
 
     if dataset_name == "lfw_people":
         X = fetch_lfw_people().data
@@ -161,7 +161,7 @@ def get_data(dataset_name):
     elif dataset_name == "SVHN":
         if handle_missing_dataset(SVHN_FOLDER) == 0:
             return
-        X1 = sp.io.loadmat("%strain_32x32.mat" % SVHN_FOLDER)["X"]
+        X1 = sp.io.loadmat(f"{SVHN_FOLDER}train_32x32.mat")["X"]
         X2 = [X1[:, :, :, i].reshape(32 * 32 * 3) for i in range(X1.shape[3])]
         X = np.vstack(X2)
         del X1
@@ -182,7 +182,7 @@ def get_data(dataset_name):
         sparsity = int(1e6)
         size = int(1e6)
         small_size = int(1e4)
-        data = np.random.normal(0, 1, int(sparsity / 10))
+        data = np.random.normal(0, 1, sparsity // 10)
         data = np.repeat(data, 10)
         row = np.random.uniform(0, small_size, sparsity)
         col = np.random.uniform(0, small_size, sparsity)
@@ -222,7 +222,7 @@ def plot_time_vs_s(time, norm, point_labels, title):
 def scatter_time_vs_s(time, norm, point_labels, title):
     plt.figure()
     size = 100
-    for i, l in enumerate(sorted(norm.keys())):
+    for l in sorted(norm.keys()):
         if l != "fbpca":
             plt.scatter(time[l], norm[l], label=l, marker="o", c="b", s=size)
             for label, x, y in zip(point_labels, list(time[l]), list(norm[l])):
@@ -287,7 +287,6 @@ def svd_timing(
             random_state=random_state,
             transpose=False,
         )
-        call_time = time() - t0
     else:
         gc.collect()
         t0 = time()
@@ -295,8 +294,7 @@ def svd_timing(
         U, mu, V = fbpca.pca(
             X, n_comps, raw=True, n_iter=n_iter, l=n_oversamples + n_comps
         )
-        call_time = time() - t0
-
+    call_time = time() - t0
     return U, mu, V, call_time
 
 
@@ -309,17 +307,16 @@ def norm_diff(A, norm=2, msg=True, random_state=None):
     """
 
     if msg:
-        print("... computing %s norm ..." % norm)
-    if norm == 2:
-        # s = sp.linalg.norm(A, ord=2)  # slow
-        v0 = _init_arpack_v0(min(A.shape), random_state)
-        value = sp.sparse.linalg.svds(A, k=1, return_singular_vectors=False, v0=v0)
-    else:
-        if sp.sparse.issparse(A):
-            value = sp.sparse.linalg.norm(A, ord=norm)
-        else:
-            value = sp.linalg.norm(A, ord=norm)
-    return value
+        print(f"... computing {norm} norm ...")
+    if norm != 2:
+        return (
+            sp.sparse.linalg.norm(A, ord=norm)
+            if sp.sparse.issparse(A)
+            else sp.linalg.norm(A, ord=norm)
+        )
+    # s = sp.linalg.norm(A, ord=2)  # slow
+    v0 = _init_arpack_v0(min(A.shape), random_state)
+    return sp.sparse.linalg.svds(A, k=1, return_singular_vectors=False, v0=v0)
 
 
 def scalable_frobenius_norm_discrepancy(X, U, s, V):
@@ -360,7 +357,7 @@ def bench_a(X, dataset_name, power_iter, n_oversamples, n_comps):
                 power_iteration_normalizer=pm,
                 n_oversamples=n_oversamples,
             )
-            label = "sklearn - %s" % pm
+            label = f"sklearn - {pm}"
             all_time[label].append(time)
             if enable_spectral_norm:
                 A = U.dot(np.diag(s).dot(V))
@@ -391,9 +388,9 @@ def bench_a(X, dataset_name, power_iter, n_oversamples, n_comps):
             all_frobenius[label].append(f / X_fro_norm)
 
     if enable_spectral_norm:
-        title = "%s: spectral norm diff vs running time" % (dataset_name)
+        title = f"{dataset_name}: spectral norm diff vs running time"
         plot_time_vs_s(all_time, all_spectral, power_iter, title)
-    title = "%s: Frobenius norm diff vs running time" % (dataset_name)
+    title = f"{dataset_name}: Frobenius norm diff vs running time"
     plot_time_vs_s(all_time, all_frobenius, power_iter, title)
 
 
@@ -438,9 +435,9 @@ def bench_b(power_list):
                 all_frobenius[label].append(f / X_fro_norm)
 
     if enable_spectral_norm:
-        title = "%s: spectral norm diff vs n power iteration" % (dataset_name)
+        title = f"{dataset_name}: spectral norm diff vs n power iteration"
         plot_power_iter_vs_s(power_iter, all_spectral, title)
-    title = "%s: Frobenius norm diff vs n power iteration" % (dataset_name)
+    title = f"{dataset_name}: Frobenius norm diff vs n power iteration"
     plot_power_iter_vs_s(power_iter, all_frobenius, title)
 
 
@@ -488,7 +485,7 @@ def bench_c(datasets, n_comps):
             f = scalable_frobenius_norm_discrepancy(X, U, s, V)
             all_frobenius[label].append(f / X_fro_norm)
 
-    if len(all_time) == 0:
+    if not all_time:
         raise ValueError("No tests ran. Aborting.")
 
     if enable_spectral_norm:

@@ -22,6 +22,7 @@ hyperparameters used in the first figure by black dots.
 
 """
 
+
 # Authors: Jan Hendrik Metzen <jhm@informatik.uni-bremen.de>
 #
 # License: BSD 3 clause
@@ -86,13 +87,13 @@ plt.plot(
     X_,
     gp_fix.predict_proba(X_[:, np.newaxis])[:, 1],
     "r",
-    label="Initial kernel: %s" % gp_fix.kernel_,
+    label=f"Initial kernel: {gp_fix.kernel_}",
 )
 plt.plot(
     X_,
     gp_opt.predict_proba(X_[:, np.newaxis])[:, 1],
     "b",
-    label="Optimized kernel: %s" % gp_opt.kernel_,
+    label=f"Optimized kernel: {gp_opt.kernel_}",
 )
 plt.xlabel("Feature")
 plt.ylabel("Class 1 probability")

@@ -28,7 +28,7 @@ def compute_bench(alpha, n_samples, n_features, precompute):
         for nf in n_features:
             it += 1
             print("==================")
-            print("Iteration %s of %s" % (it, max(len(n_samples), len(n_features))))
+            print(f"Iteration {it} of {max(len(n_samples), len(n_features))}")
             print("==================")
             n_informative = nf // 10
             X, Y, coef_ = make_regression(

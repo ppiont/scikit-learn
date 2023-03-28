@@ -92,12 +92,10 @@ class NMSlibTransformer(TransformerMixin, BaseEstimator):
         indices, distances = np.vstack(indices), np.vstack(distances)
 
         indptr = np.arange(0, n_samples_transform * n_neighbors + 1, n_neighbors)
-        kneighbors_graph = csr_matrix(
+        return csr_matrix(
             (distances.ravel(), indices.ravel(), indptr),
             shape=(n_samples_transform, self.n_samples_fit_),
         )
-
-        return kneighbors_graph
 
 
 def load_mnist(n_samples):

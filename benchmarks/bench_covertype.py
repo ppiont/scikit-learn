@@ -158,7 +158,7 @@ if __name__ == "__main__":
     print("===================")
     print("%s %d" % ("number of features:".ljust(25), X_train.shape[1]))
     print("%s %d" % ("number of classes:".ljust(25), np.unique(y_train).size))
-    print("%s %s" % ("data type:".ljust(25), X_train.dtype))
+    print(f'{"data type:".ljust(25)} {X_train.dtype}')
     print(
         "%s %d (pos=%d, neg=%d, size=%dMB)"
         % (
@@ -185,7 +185,7 @@ if __name__ == "__main__":
     print("====================")
     error, train_time, test_time = {}, {}, {}
     for name in sorted(args["classifiers"]):
-        print("Training %s ... " % name, end="")
+        print(f"Training {name} ... ", end="")
         estimator = ESTIMATORS[name]
         estimator_params = estimator.get_params()
 
@@ -215,17 +215,11 @@ if __name__ == "__main__":
     print()
     print("Classification performance:")
     print("===========================")
-    print("%s %s %s %s" % ("Classifier  ", "train-time", "test-time", "error-rate"))
+    print('Classifier   train-time test-time error-rate')
     print("-" * 44)
     for name in sorted(args["classifiers"], key=error.get):
         print(
-            "%s %s %s %s"
-            % (
-                name.ljust(12),
-                ("%.4fs" % train_time[name]).center(10),
-                ("%.4fs" % test_time[name]).center(10),
-                ("%.4f" % error[name]).center(10),
-            )
+            f'{name.ljust(12)} {("%.4fs" % train_time[name]).center(10)} {("%.4fs" % test_time[name]).center(10)} {("%.4f" % error[name]).center(10)}'
         )
 
     print()

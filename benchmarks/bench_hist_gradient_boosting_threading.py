@@ -115,14 +115,8 @@ sklearn_est = Estimator(
     verbose=0,
 )
 loss = args.loss
-if args.problem == "classification":
-    if loss == "default":
-        # loss='auto' does not work with get_equivalent_estimator()
-        loss = "log_loss"
-else:
-    # regression
-    if loss == "default":
-        loss = "squared_error"
+if loss == "default":
+    loss = "log_loss" if args.problem == "classification" else "squared_error"
 sklearn_est.set_params(loss=loss)
 
 
@@ -334,13 +328,13 @@ if args.plot or args.plot_filename:
 
     title = args.problem
     if args.problem == "classification":
-        title += " n_classes = {}".format(args.n_classes)
+        title += f" n_classes = {args.n_classes}"
     fig.suptitle(title)
 
     plt.tight_layout()
 
-    if args.plot_filename:
-        plt.savefig(args.plot_filename)
+if args.plot_filename:
+    plt.savefig(args.plot_filename)
 
-    if args.plot:
-        plt.show()
+if args.plot:
+    plt.show()

@@ -89,7 +89,7 @@ if __name__ == "__main__":
         n = 10**exponent
         Y = DATASET_GENERATORS[args.dataset](n)
         time_per_iteration = [
-            bench_isotonic_regression(Y) for i in range(args.iterations)
+            bench_isotonic_regression(Y) for _ in range(args.iterations)
         ]
         timing = (n, np.mean(time_per_iteration))
         timings.append(timing)

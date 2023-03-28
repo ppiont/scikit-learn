@@ -152,9 +152,7 @@ import pandas as pd
 
 def shorten_param(param_name):
     """Remove components' prefixes in param_name."""
-    if "__" in param_name:
-        return param_name.rsplit("__", 1)[1]
-    return param_name
+    return param_name.rsplit("__", 1)[1] if "__" in param_name else param_name
 
 
 cv_results = pd.DataFrame(random_search.cv_results_)

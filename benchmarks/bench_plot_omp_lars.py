@@ -17,7 +17,6 @@ def compute_bench(samples_range, features_range):
 
     it = 0
 
-    results = dict()
     lars = np.empty((len(features_range), len(samples_range)))
     lars_gram = lars.copy()
     omp = lars.copy()
@@ -90,9 +89,10 @@ def compute_bench(samples_range, features_range):
             print("%0.3fs" % delta)
             omp[i_f, i_s] = delta
 
-    results["time(LARS) / time(OMP)\n (w/ Gram)"] = lars_gram / omp_gram
-    results["time(LARS) / time(OMP)\n (w/o Gram)"] = lars / omp
-    return results
+    return {
+        "time(LARS) / time(OMP)\n (w/ Gram)": lars_gram / omp_gram,
+        "time(LARS) / time(OMP)\n (w/o Gram)": lars / omp,
+    }
 
 
 if __name__ == "__main__":

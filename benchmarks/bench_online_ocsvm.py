@@ -112,11 +112,7 @@ for dat, dataset_name in enumerate(datasets):
     print_outlier_ratio(y)
 
     n_samples, n_features = np.shape(X)
-    if dataset_name == "SA":  # LibSVM too long with n_samples // 2
-        n_samples_train = n_samples // 20
-    else:
-        n_samples_train = n_samples // 2
-
+    n_samples_train = n_samples // 20 if dataset_name == "SA" else n_samples // 2
     n_samples_test = n_samples - n_samples_train
     print("n_train: ", n_samples_train)
     print("n_features: ", n_features)
@@ -134,7 +130,7 @@ for dat, dataset_name in enumerate(datasets):
 
     for random_state in random_states:
 
-        print("random state: %s" % random_state)
+        print(f"random state: {random_state}")
 
         X, y = shuffle(X, y, random_state=random_state)
         X_train = X[:n_samples_train]

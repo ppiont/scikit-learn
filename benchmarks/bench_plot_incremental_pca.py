@@ -22,7 +22,7 @@ def plot_results(X, y, label):
 
 def benchmark(estimator, data):
     gc.collect()
-    print("Benching %s" % estimator)
+    print(f"Benching {estimator}")
     t0 = time()
     estimator.fit(data)
     training_time = time() - t0

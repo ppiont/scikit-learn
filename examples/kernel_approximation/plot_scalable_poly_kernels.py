@@ -21,6 +21,7 @@ approximating the accuracy of a kernelized classifier in a scalable manner.
 
 """
 
+
 # Author: Daniel Lopez-Sanchez <lope@usal.es>
 # License: BSD 3 clause
 
@@ -82,15 +83,13 @@ X_test = mm.transform(X_test)
 import time
 from sklearn.svm import LinearSVC
 
-results = {}
-
 lsvm = LinearSVC()
 start = time.time()
 lsvm.fit(X_train, y_train)
 lsvm_time = time.time() - start
 lsvm_score = 100 * lsvm.score(X_test, y_test)
 
-results["LSVM"] = {"time": lsvm_time, "score": lsvm_score}
+results = {"LSVM": {"time": lsvm_time, "score": lsvm_score}}
 print(f"Linear SVM score on raw features: {lsvm_score:.2f}%")
 
 # %%

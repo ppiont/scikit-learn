@@ -54,7 +54,7 @@ datasets = ["http", "smtp", "SA", "SF", "shuttle", "forestcover"]
 for dat in datasets:
 
     # Loading and vectorizing the data:
-    print("====== %s ======" % dat)
+    print(f"====== {dat} ======")
     print("--- Fetching data...")
     if dat in ["http", "smtp", "SF", "SA"]:
         dataset = fetch_kddcup99(
@@ -133,7 +133,7 @@ for dat in datasets:
         fig, ax = plt.subplots(3, sharex=True, sharey=True)
         bins = np.linspace(-0.5, 0.5, 200)
         ax[0].hist(scoring, bins, color="black")
-        ax[0].set_title("Decision function for %s dataset" % dat)
+        ax[0].set_title(f"Decision function for {dat} dataset")
         ax[1].hist(scoring[y_test == 0], bins, color="b", label="normal data")
         ax[1].legend(loc="lower right")
         ax[2].hist(scoring[y_test == 1], bins, color="r", label="outliers")

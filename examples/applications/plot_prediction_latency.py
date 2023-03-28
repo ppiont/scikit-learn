@@ -233,7 +233,7 @@ def plot_n_features_influence(percentiles, percentile):
     fig, ax1 = plt.subplots(figsize=(10, 6))
     colors = ["r", "g", "b"]
     for i, cls_name in enumerate(percentiles.keys()):
-        x = np.array(sorted([n for n in percentiles[cls_name].keys()]))
+        x = np.array(sorted(list(percentiles[cls_name].keys())))
         y = np.array([percentiles[cls_name][n] for n in x])
         plt.plot(
             x,
@@ -253,7 +253,7 @@ def benchmark_throughputs(configuration, duration_secs=0.1):
     X_train, y_train, X_test, y_test = generate_dataset(
         configuration["n_train"], configuration["n_test"], configuration["n_features"]
     )
-    throughputs = dict()
+    throughputs = {}
     for estimator_config in configuration["estimators"]:
         estimator_config["instance"].fit(X_train, y_train)
         start_time = time.time()

@@ -89,9 +89,12 @@ class CleanCommand(Command):
                     if os.path.exists(os.path.join(dirpath, pyx_file)):
                         os.unlink(os.path.join(dirpath, filename))
 
-                if remove_c_files and extension == ".tp":
-                    if os.path.exists(os.path.join(dirpath, root)):
-                        os.unlink(os.path.join(dirpath, root))
+                if (
+                    remove_c_files
+                    and extension == ".tp"
+                    and os.path.exists(os.path.join(dirpath, root))
+                ):
+                    os.unlink(os.path.join(dirpath, root))
 
             for dirname in dirnames:
                 if dirname == "__pycache__":
@@ -108,11 +111,7 @@ class build_ext_subclass(build_ext):
     def finalize_options(self):
         build_ext.finalize_options(self)
         if self.parallel is None:
-            # Do not override self.parallel if already defined by
-            # command-line flag (--parallel or -j)
-
-            parallel = os.environ.get("SKLEARN_BUILD_PARALLEL")
-            if parallel:
+            if parallel := os.environ.get("SKLEARN_BUILD_PARALLEL"):
                 self.parallel = int(parallel)
         if self.parallel:
             print("setting parallel=%d " % self.parallel)
@@ -170,25 +169,21 @@ def check_package_status(package, min_version):
         package_status["up_to_date"] = False
         package_status["version"] = ""
 
-    req_str = "scikit-learn requires {} >= {}.\n".format(package, min_version)
-
-    instructions = (
-        "Installation instructions are available on the "
-        "scikit-learn website: "
-        "http://scikit-learn.org/stable/install.html\n"
-    )
+    req_str = f"scikit-learn requires {package} >= {min_version}.\n"
 
     if package_status["up_to_date"] is False:
+        instructions = (
+            "Installation instructions are available on the "
+            "scikit-learn website: "
+            "http://scikit-learn.org/stable/install.html\n"
+        )
+
         if package_status["version"]:
             raise ImportError(
-                "Your installation of {} {} is out-of-date.\n{}{}".format(
-                    package, package_status["version"], req_str, instructions
-                )
+                f'Your installation of {package} {package_status["version"]} is out-of-date.\n{req_str}{instructions}'
             )
         else:
-            raise ImportError(
-                "{} is not installed.\n{}{}".format(package, req_str, instructions)
-            )
+            raise ImportError(f"{package} is not installed.\n{req_str}{instructions}")
 
 
 extension_config = {
@@ -459,16 +454,12 @@ def configure_extension_modules():
     np_include = numpy.get_include()
     default_optimization_level = "O2"
 
-    if os.name == "posix":
-        default_libraries = ["m"]
-    else:
-        default_libraries = []
-
+    default_libraries = ["m"] if os.name == "posix" else []
     default_extra_compile_args = []
-    build_with_debug_symbols = (
-        os.environ.get("SKLEARN_BUILD_ENABLE_DEBUG_SYMBOLS", "0") != "0"
-    )
     if os.name == "posix":
+        build_with_debug_symbols = (
+            os.environ.get("SKLEARN_BUILD_ENABLE_DEBUG_SYMBOLS", "0") != "0"
+        )
         if build_with_debug_symbols:
             default_extra_compile_args.append("-g")
         else:
@@ -553,9 +544,9 @@ def configure_extension_modules():
 
 
 def setup_package():
-    python_requires = ">=3.8"
     required_python_version = (3, 8)
 
+    python_requires = ">=3.8"
     metadata = dict(
         name=DISTNAME,
         maintainer=MAINTAINER,
@@ -600,15 +591,14 @@ def setup_package():
     )
 
     commands = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
-    if not all(
-        command in ("egg_info", "dist_info", "clean", "check") for command in commands
+    if any(
+        command not in ("egg_info", "dist_info", "clean", "check")
+        for command in commands
     ):
         if sys.version_info < required_python_version:
             required_version = "%d.%d" % required_python_version
             raise RuntimeError(
-                "Scikit-learn requires Python %s or later. The current"
-                " Python version is %s installed in %s."
-                % (required_version, platform.python_version(), sys.executable)
+                f"Scikit-learn requires Python {required_version} or later. The current Python version is {platform.python_version()} installed in {sys.executable}."
             )
 
         check_package_status("numpy", min_deps.NUMPY_MIN_VERSION)

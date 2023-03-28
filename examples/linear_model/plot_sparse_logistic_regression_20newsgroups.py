@@ -20,6 +20,7 @@ traditional (l2-penalised) logistic regression model.
 
 """
 
+
 # Author: Arthur Mensch
 
 import timeit
@@ -62,19 +63,16 @@ models = {
     "multinomial": {"name": "Multinomial", "iters": [1, 2, 5]},
 }
 
-for model in models:
+for model, model_params in models.items():
     # Add initial chance-level values for plotting purpose
     accuracies = [1 / n_classes]
     times = [0]
     densities = [1]
 
-    model_params = models[model]
-
     # Small number of epochs for fast runtime
     for this_max_iter in model_params["iters"]:
         print(
-            "[model=%s, solver=%s] Number of epochs: %s"
-            % (model_params["name"], solver, this_max_iter)
+            f'[model={model_params["name"]}, solver={solver}] Number of epochs: {this_max_iter}'
         )
         lr = LogisticRegression(
             solver=solver,
@@ -113,7 +111,7 @@ for model in models:
     name = models[model]["name"]
     times = models[model]["times"]
     accuracies = models[model]["accuracies"]
-    ax.plot(times, accuracies, marker="o", label="Model: %s" % name)
+    ax.plot(times, accuracies, marker="o", label=f"Model: {name}")
     ax.set_xlabel("Train time (s)")
     ax.set_ylabel("Test accuracy")
 ax.legend()

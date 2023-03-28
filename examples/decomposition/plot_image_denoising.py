@@ -168,7 +168,7 @@ transform_algorithms = [
 
 reconstructions = {}
 for title, transform_algorithm, kwargs in transform_algorithms:
-    print(title + "...")
+    print(f"{title}...")
     reconstructions[title] = raccoon_face.copy()
     t0 = time()
     dico.set_params(transform_algorithm=transform_algorithm, **kwargs)

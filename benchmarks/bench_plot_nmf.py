@@ -105,11 +105,8 @@ def _nls_subproblem(
     gamma = 1
     for n_iter in range(1, max_iter + 1):
         grad = np.dot(WtW, H) - WtX
-        if alpha > 0 and l1_ratio == 1.0:
-            grad += alpha
-        elif alpha > 0:
-            grad += alpha * (l1_ratio + (1 - l1_ratio) * H)
-
+        if alpha > 0:
+            grad += alpha if l1_ratio == 1.0 else alpha * (l1_ratio + (1 - l1_ratio) * H)
         # The following multiplication with a boolean array is more than twice
         # as fast as indexing into grad.
         if _norm(grad * np.logical_or(grad < 0, H > 0)) < tol:
@@ -349,7 +346,7 @@ def plot_results(results_df, plot_name):
         plt.legend(loc=0, fontsize="x-small")
         plt.xlabel("Time (s)")
         plt.ylabel("loss")
-        plt.title("%s" % init)
+        plt.title(f"{init}")
     plt.suptitle(plot_name, fontsize=16)
 
 
@@ -378,9 +375,9 @@ def run_bench(X, clfs, plot_name, n_components, tol, alpha, l1_ratio):
     start = time()
     results = []
     for name, clf_type, iter_range, clf_params in clfs:
-        print("Training %s:" % name)
+        print(f"Training {name}:")
         for rs, init in enumerate(("nndsvd", "nndsvdar", "random")):
-            print("    %s %s: " % (init, " " * (8 - len(init))), end="")
+            print(f'    {init} {" " * (8 - len(init))}: ', end="")
             W, H = _initialize_nmf(X, n_components, init, 1e-6, rs)
 
             for max_iter in iter_range:
@@ -396,7 +393,7 @@ def run_bench(X, clfs, plot_name, n_components, tol, alpha, l1_ratio):
                     name, X, W, H, X.shape, clf_type, clf_params, init, n_components, rs
                 )
 
-                init_name = "init='%s'" % init
+                init_name = f"init='{init}'"
                 results.append((name, this_loss, duration, init_name))
                 # print("loss: %.6f, time: %.3f sec" % (this_loss, duration))
                 print(".", end="")
@@ -421,8 +418,7 @@ def load_20news():
         shuffle=True, random_state=1, remove=("headers", "footers", "quotes")
     )
     vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, stop_words="english")
-    tfidf = vectorizer.fit_transform(dataset.data)
-    return tfidf
+    return vectorizer.fit_transform(dataset.data)
 
 
 def load_faces():
@@ -435,12 +431,11 @@ def load_faces():
 
 
 def build_clfs(cd_iters, pg_iters, mu_iters):
-    clfs = [
+    return [
         ("Coordinate Descent", NMF, cd_iters, {"solver": "cd"}),
         ("Projected Gradient", _PGNMF, pg_iters, {"solver": "pg"}),
         ("Multiplicative Update", NMF, mu_iters, {"solver": "mu"}),
     ]
-    return clfs
 
 
 if __name__ == "__main__":

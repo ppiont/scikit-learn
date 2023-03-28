@@ -33,6 +33,7 @@ curves.
     curves and their respective AUC.
 """
 
+
 # %%
 # Load and prepare data
 # =====================
@@ -194,7 +195,7 @@ print(f"Micro-averaged One-vs-Rest ROC AUC score:\n{micro_roc_auc_ovr:.2f}")
 from sklearn.metrics import roc_curve, auc
 
 # store the fpr, tpr, and roc_auc for all averaging strategies
-fpr, tpr, roc_auc = dict(), dict(), dict()
+fpr, tpr, roc_auc = {}, {}, {}
 # Compute micro-average ROC curve and ROC area
 fpr["micro"], tpr["micro"], _ = roc_curve(y_onehot_test.ravel(), y_score.ravel())
 roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
@@ -321,7 +322,7 @@ print(pair_list)
 
 # %%
 pair_scores = []
-mean_tpr = dict()
+mean_tpr = {}
 
 for ix, (label_a, label_b) in enumerate(pair_list):
 
@@ -404,7 +405,7 @@ for ix, (label_a, label_b) in enumerate(pair_list):
         label=f"Mean {label_a} vs {label_b} (AUC = {pair_scores[ix]:.2f})",
     )
 
-ovo_tpr /= sum(1 for pair in enumerate(pair_list))
+ovo_tpr /= sum(1 for _ in enumerate(pair_list))
 
 plt.plot(
     fpr_grid,

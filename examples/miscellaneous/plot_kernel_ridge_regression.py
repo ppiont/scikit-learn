@@ -17,6 +17,7 @@ consists of a sinusoidal target function and strong noise added to every fifth
 datapoint.
 
 """
+
 # %%
 # Authors: Jan Hendrik Metzen <jhm@informatik.uni-bremen.de>
 # License: BSD 3 clause
@@ -159,14 +160,14 @@ for name, estimator in {
         train_time,
         "o-",
         color="r" if name == "SVR" else "g",
-        label="%s (train)" % name,
+        label=f"{name} (train)",
     )
     plt.plot(
         sizes,
         test_time,
         "o--",
         color="r" if name == "SVR" else "g",
-        label="%s (test)" % name,
+        label=f"{name} (test)",
     )
 
 plt.xscale("log")

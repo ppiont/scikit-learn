@@ -10,6 +10,7 @@ This exercise is used in the :ref:`cv_generators_tut` part of the
 
 """
 
+
 import numpy as np
 from sklearn.model_selection import cross_val_score
 from sklearn import datasets, svm
@@ -19,8 +20,8 @@ X, y = datasets.load_digits(return_X_y=True)
 svc = svm.SVC(kernel="linear")
 C_s = np.logspace(-10, 0, 10)
 
-scores = list()
-scores_std = list()
+scores = []
+scores_std = []
 for C in C_s:
     svc.C = C
     this_scores = cross_val_score(svc, X, y, n_jobs=1)

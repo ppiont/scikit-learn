@@ -65,10 +65,10 @@ def get_contributors():
         members.extend(reply.json())
 
     # keep only the logins
-    core_devs = set(c["login"] for c in core_devs)
-    contributor_experience_team = set(c["login"] for c in contributor_experience_team)
-    comm_team = set(c["login"] for c in comm_team)
-    members = set(c["login"] for c in members)
+    core_devs = {c["login"] for c in core_devs}
+    contributor_experience_team = {c["login"] for c in contributor_experience_team}
+    comm_team = {c["login"] for c in comm_team}
+    members = {c["login"] for c in members}
 
     # add missing contributors with GitHub accounts
     members |= {"dubourg", "mbrucher", "thouis", "jarrodmillman"}
@@ -114,9 +114,9 @@ def get_contributors():
 
 def get_profile(login):
     """Get the GitHub profile from login"""
-    print("get profile for %s" % (login,))
+    print(f"get profile for {login}")
     try:
-        profile = get("https://api.github.com/users/%s" % login).json()
+        profile = get(f"https://api.github.com/users/{login}").json()
     except requests.exceptions.HTTPError:
         return dict(name=login, avatar_url=LOGO_URL, html_url="")
 
@@ -153,21 +153,20 @@ def generate_table(contributors):
         "    </style>",
     ]
     for contributor in contributors:
-        lines.append("    <div>")
-        lines.append(
-            "    <a href='%s'><img src='%s' class='avatar' /></a> <br />"
-            % (contributor["html_url"], contributor["avatar_url"])
+        lines.extend(
+            (
+                "    <div>",
+                f"""    <a href='{contributor["html_url"]}'><img src='{contributor["avatar_url"]}' class='avatar' /></a> <br />""",
+                f'    <p>{contributor["name"]}</p>',
+                "    </div>",
+            )
         )
-        lines.append("    <p>%s</p>" % (contributor["name"],))
-        lines.append("    </div>")
     lines.append("    </div>")
     return "\n".join(lines) + "\n"
 
 
 def generate_list(contributors):
-    lines = []
-    for contributor in contributors:
-        lines.append("- %s" % (contributor["name"],))
+    lines = [f'- {contributor["name"]}' for contributor in contributors]
     return "\n".join(lines) + "\n"
 
 

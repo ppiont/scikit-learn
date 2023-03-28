@@ -29,8 +29,8 @@ class CaselessPreservingLiteral(CaselessLiteral):
     """
     def __init__( self, matchString ):
         super().__init__(matchString.upper())
-        self.name = "'%s'" % matchString
-        self.errmsg = "Expected " + self.name
+        self.name = f"'{matchString}'"
+        self.errmsg = f"Expected {self.name}"
         self.myException.msg = self.errmsg
 
     def parseImpl( self, instring, loc, doActions=True ):
@@ -55,7 +55,7 @@ def convertToFloat(s, loc, toks):
     try:
         return float(toks[0])
     except BaseException as e:
-        raise ParseException(loc, "invalid float format %s" % toks[0]) from e
+        raise ParseException(loc, f"invalid float format {toks[0]}") from e
 
 exponent = CaselessLiteral("e")+Optional(sign)+Word(nums)
 
@@ -151,13 +151,11 @@ def get_points(d):
     points = []
     currentset = None
     for command in commands:
-        if command[0] == 'M' or command[0] == 'm':
+        if command[0] in ['M', 'm']:
             currentset = []
             points.append(currentset)
             currentset.append(command[1][-1])
-        elif command[0] == 'L' or command[0] == 'l':
-            currentset.extend(command[1])
-        elif command[0] == 'C' or command[0] == 'c':
+        elif command[0] in ['L', 'l', 'C', 'c']:
             currentset.extend(command[1])
     return points
 

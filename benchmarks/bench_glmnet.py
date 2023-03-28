@@ -60,7 +60,7 @@ if __name__ == "__main__":
     n_test_samples = 1000
     for i in range(1, n + 1):
         print("==================")
-        print("Iteration %s of %s" % (i, n))
+        print(f"Iteration {i} of {n}")
         print("==================")
 
         X, Y, coef_ = make_regression(

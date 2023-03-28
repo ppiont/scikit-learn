@@ -12,6 +12,7 @@ measured using the explained variance a.k.a. R^2.
 
 """
 
+
 # Author: Alexandre Gramfort <alexandre.gramfort@inria.fr>
 # License: BSD 3 clause
 
@@ -40,8 +41,8 @@ X_train, X_test, y_train, y_test = train_test_split(
 # -----------------------------
 alphas = np.logspace(-5, 1, 60)
 enet = linear_model.ElasticNet(l1_ratio=0.7, max_iter=10000)
-train_errors = list()
-test_errors = list()
+train_errors = []
+test_errors = []
 for alpha in alphas:
     enet.set_params(alpha=alpha)
     enet.fit(X_train, y_train)
@@ -50,7 +51,7 @@ for alpha in alphas:
 
 i_alpha_optim = np.argmax(test_errors)
 alpha_optim = alphas[i_alpha_optim]
-print("Optimal regularization parameter : %s" % alpha_optim)
+print(f"Optimal regularization parameter : {alpha_optim}")
 
 # Estimate the coef_ on full data with optimal regularization parameter
 enet.set_params(alpha=alpha_optim)

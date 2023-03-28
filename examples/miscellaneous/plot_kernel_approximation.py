@@ -29,6 +29,7 @@ This is not easily possible for the case of the kernelized SVM.
 
 """
 
+
 # %%
 # Python package and dataset imports, load dataset
 # ---------------------------------------------------
@@ -214,6 +215,7 @@ titles = [
 
 plt.figure(figsize=(18, 7.5))
 plt.rcParams.update({"font.size": 14})
+lv_eps = 0.01  # Adjust a mapping from calculated contour levels to color.
 # predict and plot
 for i, clf in enumerate((kernel_svm, nystroem_approx_svm, fourier_approx_svm)):
     # Plot the decision boundary. For that, we will assign a color to each
@@ -224,7 +226,6 @@ for i, clf in enumerate((kernel_svm, nystroem_approx_svm, fourier_approx_svm)):
     # Put the result into a color plot
     Z = Z.reshape(grid.shape[:-1])
     levels = np.arange(10)
-    lv_eps = 0.01  # Adjust a mapping from calculated contour levels to color.
     plt.contourf(
         multiples,
         multiples,

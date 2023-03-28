@@ -21,6 +21,7 @@ analogous to the random splits in Random Forests
 
 """
 
+
 # Author: Peter Prettenhofer <peter.prettenhofer@gmail.com>
 #
 # License: BSD 3 clause
@@ -66,7 +67,7 @@ for label, color, setting in [
     ),
 ]:
     params = dict(original_params)
-    params.update(setting)
+    params |= setting
 
     clf = ensemble.GradientBoostingClassifier(**params)
     clf.fit(X_train, y_train)

@@ -192,11 +192,11 @@ class View:
 
     def update_example(self, model, idx):
         x, y, l = model.data[idx]
-        if l == 1:
-            color = "w"
-        elif l == -1:
+        if l == -1:
             color = "k"
-        self.ax.plot([x], [y], "%so" % color, scalex=0.0, scaley=0.0)
+        elif l == 1:
+            color = "w"
+        self.ax.plot([x], [y], f"{color}o", scalex=0.0, scaley=0.0)
 
     def update(self, event, model):
         if event == "examples_loaded":

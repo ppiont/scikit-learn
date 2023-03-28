@@ -100,12 +100,12 @@ def create_species_bunch(species_name, train, test, coverages, xgrid, ygrid):
     for label, pts in points.items():
         # choose points associated with the desired species
         pts = pts[pts["species"] == species_name]
-        bunch["pts_%s" % label] = pts
+        bunch[f"pts_{label}"] = pts
 
         # determine coverage values for each of the training & testing points
         ix = np.searchsorted(xgrid, pts["dd long"])
         iy = np.searchsorted(ygrid, pts["dd lat"])
-        bunch["cov_%s" % label] = coverages[:, -iy, ix].T
+        bunch[f"cov_{label}"] = coverages[:, -iy, ix].T
 
     return bunch
 
@@ -155,7 +155,7 @@ def plot_species_distribution(
     # Fit, predict, and plot for each species.
     for i, species in enumerate([BV_bunch, MM_bunch]):
         print("_" * 80)
-        print("Modeling distribution of species '%s'" % species.name)
+        print(f"Modeling distribution of species '{species.name}'")
 
         # Standardize features
         mean = species.cov_train.mean(axis=0)

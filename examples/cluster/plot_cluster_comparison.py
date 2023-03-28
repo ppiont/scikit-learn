@@ -24,6 +24,7 @@ dimensional data.
 
 """
 
+
 import time
 import warnings
 
@@ -130,7 +131,7 @@ datasets = [
 for i_dataset, (dataset, algo_params) in enumerate(datasets):
     # update parameters with dataset-specific values
     params = default_base.copy()
-    params.update(algo_params)
+    params |= algo_params
 
     X, y = dataset
 

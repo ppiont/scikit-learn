@@ -366,11 +366,7 @@ def execute_command(command_list):
     if proc.returncode != 0:
         command_str = " ".join(command_list)
         raise RuntimeError(
-            "Command exited with non-zero exit code.\n"
-            "Exit code: {}\n"
-            "Command:\n{}\n"
-            "stdout:\n{}\n"
-            "stderr:\n{}\n".format(proc.returncode, command_str, out, err)
+            f"Command exited with non-zero exit code.\nExit code: {proc.returncode}\nCommand:\n{command_str}\nstdout:\n{out}\nstderr:\n{err}\n"
         )
     return out
 

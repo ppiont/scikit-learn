@@ -15,6 +15,7 @@ The visualization shows coefficients of the models for varying C.
 
 """
 
+
 # Authors: Alexandre Gramfort <alexandre.gramfort@inria.fr>
 #          Mathieu Blondel <mathieu@mblondel.org>
 #          Andreas Mueller <amueller@ais.uni-bonn.de>
@@ -87,6 +88,6 @@ for i, (C, axes_row) in enumerate(zip((1, 0.1, 0.01), axes)):
         ax.set_xticks(())
         ax.set_yticks(())
 
-    axes_row[0].set_ylabel("C = %s" % C)
+    axes_row[0].set_ylabel(f"C = {C}")
 
 plt.show()

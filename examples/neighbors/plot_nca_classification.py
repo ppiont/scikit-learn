@@ -15,6 +15,7 @@ training set.
 
 """
 
+
 # License: BSD 3 clause
 
 import matplotlib.pyplot as plt
@@ -83,7 +84,7 @@ for name, clf in zip(names, classifiers):
 
     # Plot also the training and testing points
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold, edgecolor="k", s=20)
-    plt.title("{} (k = {})".format(name, n_neighbors))
+    plt.title(f"{name} (k = {n_neighbors})")
     plt.text(
         0.9,
         0.1,

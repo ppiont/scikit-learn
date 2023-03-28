@@ -60,8 +60,9 @@ observation ranking and clustering.
         Proceedings of the National Academy of Sciences of the United States
         of America, 17, 684-688.
 
-"""  # noqa: E501
+"""
 
+  # noqa: E501
 # %%
 # Generate data
 # --------------
@@ -110,9 +111,7 @@ robust_cov = MinCovDet().fit(X)
 # fit a MLE estimator to data
 emp_cov = EmpiricalCovariance().fit(X)
 print(
-    "Estimated covariance matrix:\nMCD (Robust):\n{}\nMLE:\n{}".format(
-        robust_cov.covariance_, emp_cov.covariance_
-    )
+    f"Estimated covariance matrix:\nMCD (Robust):\n{robust_cov.covariance_}\nMLE:\n{emp_cov.covariance_}"
 )
 
 # %%

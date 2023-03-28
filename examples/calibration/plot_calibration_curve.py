@@ -215,8 +215,7 @@ class NaivelyCalibratedLinearSVC(LinearSVC):
         calibrated_df = (df - self.df_min_) / (self.df_max_ - self.df_min_)
         proba_pos_class = np.clip(calibrated_df, 0, 1)
         proba_neg_class = 1 - proba_pos_class
-        proba = np.c_[proba_neg_class, proba_pos_class]
-        return proba
+        return np.c_[proba_neg_class, proba_pos_class]
 
 
 # %%

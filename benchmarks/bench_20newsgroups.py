@@ -64,7 +64,7 @@ if __name__ == "__main__":
         except (TypeError, ValueError):
             pass
 
-        print("Training %s ... " % name, end="")
+        print(f"Training {name} ... ", end="")
         t0 = time()
         clf.fit(X_train, y_train)
         train_time[name] = time() - t0
@@ -78,17 +78,11 @@ if __name__ == "__main__":
     print("Classification performance:")
     print("===========================")
     print()
-    print("%s %s %s %s" % ("Classifier  ", "train-time", "test-time", "Accuracy"))
+    print('Classifier   train-time test-time Accuracy')
     print("-" * 44)
     for name in sorted(accuracy, key=accuracy.get):
         print(
-            "%s %s %s %s"
-            % (
-                name.ljust(16),
-                ("%.4fs" % train_time[name]).center(10),
-                ("%.4fs" % test_time[name]).center(10),
-                ("%.4f" % accuracy[name]).center(10),
-            )
+            f'{name.ljust(16)} {("%.4fs" % train_time[name]).center(10)} {("%.4fs" % test_time[name]).center(10)} {("%.4f" % accuracy[name]).center(10)}'
         )
 
     print()

@@ -53,7 +53,7 @@ y = np.array(g(X) > 0, dtype=int)
 kernel = C(0.1, (1e-5, np.inf)) * DotProduct(sigma_0=0.1) ** 2
 gp = GaussianProcessClassifier(kernel=kernel)
 gp.fit(X, y)
-print("Learned kernel: %s " % gp.kernel_)
+print(f"Learned kernel: {gp.kernel_} ")
 
 # Evaluate real function and the predicted probability
 res = 50

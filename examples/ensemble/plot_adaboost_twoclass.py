@@ -17,6 +17,7 @@ with a decision score above some value.
 
 """
 
+
 # Author: Noel Dawe <noel.dawe@gmail.com>
 #
 # License: BSD 3 clause
@@ -78,7 +79,7 @@ for i, n, c in zip(range(2), class_names, plot_colors):
         cmap=plt.cm.Paired,
         s=20,
         edgecolor="k",
-        label="Class %s" % n,
+        label=f"Class {n}",
     )
 plt.xlim(x_min, x_max)
 plt.ylim(y_min, y_max)
@@ -96,7 +97,7 @@ for i, n, c in zip(range(2), class_names, plot_colors):
         bins=10,
         range=plot_range,
         facecolor=c,
-        label="Class %s" % n,
+        label=f"Class {n}",
         alpha=0.5,
         edgecolor="k",
     )

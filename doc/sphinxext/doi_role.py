@@ -24,15 +24,15 @@ def reference_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     text = utils.unescape(text)
     has_explicit_title, title, part = split_explicit_title(text)
     if typ in ["arXiv", "arxiv"]:
-        full_url = "https://arxiv.org/abs/" + part
+        full_url = f"https://arxiv.org/abs/{part}"
         if not has_explicit_title:
-            title = "arXiv:" + part
+            title = f"arXiv:{part}"
         pnode = nodes.reference(title, title, internal=False, refuri=full_url)
         return [pnode], []
     if typ in ["doi", "DOI"]:
-        full_url = "https://doi.org/" + part
+        full_url = f"https://doi.org/{part}"
         if not has_explicit_title:
-            title = "DOI:" + part
+            title = f"DOI:{part}"
         pnode = nodes.reference(title, title, internal=False, refuri=full_url)
         return [pnode], []
 

@@ -22,6 +22,7 @@ cluster with heterogeneous labels. This results in a significantly improved
 Brier score.
 
 """
+
 # Authors:
 # Mathieu Blondel <mathieu@mblondel.org>
 # Alexandre Gramfort <alexandre.gramfort@telecom-paristech.fr>
@@ -107,7 +108,7 @@ for this_y, color in zip(y_unique, colors):
         c=color[np.newaxis, :],
         alpha=0.5,
         edgecolor="k",
-        label="Class %s" % this_y,
+        label=f"Class {this_y}",
     )
 plt.legend(loc="best")
 plt.title("Data")

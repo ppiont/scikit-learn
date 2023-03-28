@@ -13,6 +13,7 @@ function approaches that of the ridge.
 
 """
 
+
 # Authors: Manoj Kumar mks542@nyu.edu
 # License: BSD 3 clause
 
@@ -48,7 +49,7 @@ for k, epsilon in enumerate(epsilon_values):
     huber = HuberRegressor(alpha=0.0, epsilon=epsilon)
     huber.fit(X, y)
     coef_ = huber.coef_ * x + huber.intercept_
-    plt.plot(x, coef_, colors[k], label="huber loss, %s" % epsilon)
+    plt.plot(x, coef_, colors[k], label=f"huber loss, {epsilon}")
 
 # Fit a ridge regressor to compare it to huber regressor.
 ridge = Ridge(alpha=0.0, random_state=0)
